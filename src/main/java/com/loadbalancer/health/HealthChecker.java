@@ -34,4 +34,17 @@ public class HealthChecker {
         scheduler.scheduleAtFixedRate(this::checkAllBackends,0,intervalSeconds,TimeUnit.SECONDS);
         logger.info("Health Checker started (interval:{}s",intervalSeconds);
     }
+
+    private void checkAllBackends(){
+        int healthyCount =0;
+        for(Backend backend : backends){
+            HealthCheckResult result = checkBackend(backend);
+            updateBackendHealth(backend,result);
+
+            if(backend.isHealthy()){
+                return healthyCount++;
+            }
+        }
+        logger.debug("Health Check completed : {}/{} backends healthy",healthyCount,backends.size());
+    }
 }
