@@ -1,7 +1,9 @@
 package com.loadbalancer.health;
 
+import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.loadbalancer.server.Backend;
@@ -46,5 +48,26 @@ public class HealthChecker {
             }
         }
         logger.debug("Health Check completed : {}/{} backends healthy",healthyCount,backends.size());
+    }
+
+    private HealthCheckResult checkBackend(Backend backend){
+        String url= String.format("",backend.getHost(),backend.getPort(),healthCheckPath);
+
+        long startTime=System.currentTimeMillis();
+
+        try{
+            HttpGet request = new HttpGet(url);
+            long responseTime = System.currentTimeMillis()-startTime;
+            int statusCode = response.getCode();
+            EntityUtils.consume(response.getEntity());
+            if(statusCode == 200){
+                return new HealthCheckResult(true, responseTime, "OK");
+            }else{
+                return new HealthCheckResult(false, responseTime,"Status:"+statusCode);
+            }
+        }catch(Exception e){
+            long responseTime = System.currentTimeMillis()-startTime;
+            return new HealthCheckResult(false, responseTime, e.getMessage());
+        }
     }
 }
