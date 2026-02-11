@@ -45,6 +45,30 @@ public class ProxyHandler implements Runnable {
         }
     }
 
+    private void handleRequest() throws IOException{
+        List<Backend> healthyBackends=backends.stream().filter(Backend::isHealthy).collect(Collectors.toList());
+
+        if(healthyBackends.isEmpty()){
+            logger.error("No healthy backends available");
+            sendErrorResponse(clientSocket,503,"Service Unavailable");
+            return;
+        }
+        String clientIp=clientSocket.getInetAddress().getHostAddress();
+        Backend backend = algorithm.selectBackend(healthyBackends, clientIp);
+        if(backend == null){
+            logger.error("Failed to select backend");
+            sendErrorResponse(clientSocket,503,"Service Unavailable");
+            return;
+        }
+        backend.incrementConnections();
+        try{
+            forwardRequest(backend);
+            logger.debug("Request routed to{}",backend.getAddress());
+        }finally{
+            backend.decrementConnections();
+        }
+    }
+
 
 
 }
