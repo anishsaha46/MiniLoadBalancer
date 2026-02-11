@@ -95,5 +95,85 @@ public class Config {
     }
 
 
+
+        /**
+     * Configuration for health checking of backend servers.
+     */
+    public static class HealthCheckConfig {
+        // Whether health checking is enabled
+        private boolean enabled = true;
+
+        // How often to perform health checks (e.g., "10s")
+        private String interval = "10s";
+
+        // Maximum time to wait for a health check response (e.g., "2s")
+        private String timeout = "2s";
+
+        // HTTP path to check on backend servers
+        private String path = "/health";
+
+        // Number of consecutive failures before marking backend as unhealthy
+        @JsonProperty("unhealthy_threshold")
+        private int unhealthyThreshold = 3;
+
+        // Number of consecutive successes before marking backend as healthy
+        @JsonProperty("healthy_threshold")
+        private int healthyThreshold = 2;
+
+        // Check if health checking is enabled
+        public boolean isEnabled() {
+            return enabled;
+        }
+
+        public void setEnabled(boolean enabled) {
+            this.enabled = enabled;
+        }
+
+        // Get health check interval
+        public String getInterval() {
+            return interval;
+        }
+
+        public void setInterval(String interval) {
+            this.interval = interval;
+        }
+
+        // Get health check timeout
+        public String getTimeout() {
+            return timeout;
+        }
+
+        public void setTimeout(String timeout) {
+            this.timeout = timeout;
+        }
+
+        // Get health check path
+        public String getPath() {
+            return path;
+        }
+
+        public void setPath(String path) {
+            this.path = path;
+        }
+
+        // Get unhealthy threshold
+        public int getUnhealthyThreshold() {
+            return unhealthyThreshold;
+        }
+
+        public void setUnhealthyThreshold(int unhealthyThreshold) {
+            this.unhealthyThreshold = unhealthyThreshold;
+        }
+
+        // Get healthy threshold
+        public int getHealthyThreshold() {
+            return healthyThreshold;
+        }
+
+        public void setHealthyThreshold(int healthyThreshold) {
+            this.healthyThreshold = healthyThreshold;
+        }
+    }
+
     
 }
