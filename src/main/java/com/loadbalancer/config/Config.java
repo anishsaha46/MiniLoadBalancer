@@ -4,6 +4,24 @@ import java.util.List;
 
 public class Config {
 
+
+        // Server configuration (host and port for the load balancer)
+    private ServerConfig server;
+
+    // Load balancing algorithm to use (round-robin, least-connections, ip-hash)
+    private String algorithm;
+
+    // List of backend servers to distribute traffic to
+    private List<BackendConfig> backends;
+
+    // Health check configuration (maps from YAML's health_check to Java's
+    // healthCheck)
+    @JsonProperty("health_check")
+    private HealthCheckConfig healthCheck;
+
+    // Logging configuration
+    private LoggingConfig logging;
+
     /**
      * Configuration for the load balancer server itself.
      */
@@ -205,5 +223,47 @@ public class Config {
         }
     }
 
+
+    // Getters and setters for the main Config class
+
+    public ServerConfig getServer() {
+        return server;
+    }
+
+    public void setServer(ServerConfig server) {
+        this.server = server;
+    }
+
+    public String getAlgorithm() {
+        return algorithm;
+    }
+
+    public void setAlgorithm(String algorithm) {
+        this.algorithm = algorithm;
+    }
+
+    public List<BackendConfig> getBackends() {
+        return backends;
+    }
+
+    public void setBackends(List<BackendConfig> backends) {
+        this.backends = backends;
+    }
+
+    public HealthCheckConfig getHealthCheck() {
+        return healthCheck;
+    }
+
+    public void setHealthCheck(HealthCheckConfig healthCheck) {
+        this.healthCheck = healthCheck;
+    }
+
+    public LoggingConfig getLogging() {
+        return logging;
+    }
+
+    public void setLogging(LoggingConfig logging) {
+        this.logging = logging;
+    }
     
 }
