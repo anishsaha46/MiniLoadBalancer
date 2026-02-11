@@ -69,6 +69,31 @@ public class ProxyHandler implements Runnable {
         }
     }
 
+    private void forwardRequest(Backend backend) throws IOException{
+        Socket backendSocket = new Socket();
+        try{
+            
+        backendSocket.connect(new InetSocketAddress(backend.getHost(),backend.getPort()),
+        CONNECTION_TIMEOUT);
+        backend.setSoTimeout(READ_TIMEOUT);
+
+        InputStream clientIn=clientSocket.getInputStream();
+        OutputStream clientOut=clientSocket.getOutputStream();
+        InputStream backendIn=backendSocket.getInputStream();
+        OutputStream backendOut=backendSocket.getOutputStream();
+
+        forwardHttpMessage(clientIn,backendOut,true);
+        forwardHttpMessage(backendIn,clientOut,false);
+        }
+        finally{
+            try{
+                backendSocket.close();
+            }catch(IOException e){
+                logger.debug("Error closing backend socket");
+            }
+        }
+    }
+
 
 
 }
