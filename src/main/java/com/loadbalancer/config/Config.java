@@ -175,5 +175,35 @@ public class Config {
         }
     }
 
+
+        /**
+     * Configuration for logging behavior.
+     */
+    public static class LoggingConfig {
+        // Log level (DEBUG, INFO, WARN, ERROR)
+        private String level = "INFO";
+
+        // Path to log file (optional)
+        private String file;
+
+        // Get log level
+        public String getLevel() {
+            return level;
+        }
+
+        public void setLevel(String level) {
+            this.level = level;
+        }
+
+        // Get log file path
+        public String getFile() {
+            return file;
+        }
+
+        public void setFile(String file) {
+            this.file = file;
+        }
+    }
+
     
 }
