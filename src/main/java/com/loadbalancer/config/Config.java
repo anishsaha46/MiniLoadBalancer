@@ -49,5 +49,51 @@ public class Config {
         }
     }
 
+
+    /**
+     * Configuration for a single backend server.
+     */
+    public static class BackendConfig {
+        // Hostname or IP address of the backend server
+        private String host;
+
+        // Port number the backend server listens on
+        private int port;
+
+        // Weight for weighted load balancing (higher = more traffic)
+        private int weight = 1;
+
+        // Getter for host
+        public String getHost() {
+            return host;
+        }
+
+        // Setter for host
+        public void setHost(String host) {
+            this.host = host;
+        }
+
+        // Getter for port
+        public int getPort() {
+            return port;
+        }
+
+        // Setter for port
+        public void setPort(int port) {
+            this.port = port;
+        }
+
+        // Getter for weight
+        public int getWeight() {
+            return weight;
+        }
+
+        // Setter for weight
+        public void setWeight(int weight) {
+            this.weight = weight;
+        }
+    }
+
+
     
 }
