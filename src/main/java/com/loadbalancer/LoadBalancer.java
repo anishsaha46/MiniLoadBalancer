@@ -65,5 +65,22 @@ public class LoadBalancer {
         }
     }
 
+    public void stop(){
+        if(!running){
+            logger.warn("Load balancer is not running");
+            return;
+        }
+        logger.info("Shutting down load balancer..")
+        running=false;
+
+        if(listener !=null){
+            listener.stop();
+        }
+        if(healthChecker!=null){
+            healthChecker.stop();
+        }
+        logger.info("Load balancer stopped");;
+    }
+
 
 }
